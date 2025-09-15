@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard - HomeService Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="vendor-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Vendor Dashboard</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="admin.html" class="demo-link">Admin Demo</a>
+                <div class="vendor-info">
+                    <span class="vendor-name">CleanPro Services</span>
+                    <span class="vendor-status pending">Pending Approval</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="vendor-container">
+        <!-- Sidebar -->
+        <div class="vendor-sidebar">
+            <div class="sidebar-menu">
+                <div class="menu-item active" onclick="showSection('orders')">
+                    <span class="menu-icon">📋</span>
+                    <span>Orders</span>
+                </div>
+                <div class="menu-item" onclick="showSection('profile')">
+                    <span class="menu-icon">👤</span>
+                    <span>Profile</span>
+                </div>
+                <div class="menu-item" onclick="showSection('analytics')">
+                    <span class="menu-icon">📊</span>
+                    <span>Analytics</span>
+                </div>
+                <div class="menu-item" onclick="showSection('settings')">
+                    <span class="menu-icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="vendor-main">
+            <!-- Orders Section -->
+            <div id="orders-section" class="content-section active">
+                <div class="section-header">
+                    <h2>Service Orders</h2>
+                    <div class="order-filters">
+                        <button class="filter-btn active" onclick="filterOrders('all')">All</button>
+                        <button class="filter-btn" onclick="filterOrders('pending')">Pending</button>
+                        <button class="filter-btn" onclick="filterOrders('confirmed')">Confirmed</button>
+                        <button class="filter-btn" onclick="filterOrders('completed')">Completed</button>
+                    </div>
+                </div>
+                
+                <div class="orders-grid" id="ordersGrid">
+                    <!-- Orders will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profile-section" class="content-section">
+                <div class="section-header">
+                    <h2>Vendor Profile</h2>
+                </div>
+                <div class="profile-content">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">🧹</div>
+                            <div class="profile-info">
+                                <h3>CleanPro Services</h3>
+                                <p class="profile-status pending">Pending Approval</p>
+                                <div class="profile-rating">
+                                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                                    <span class="rating-text">4.8 (156 reviews)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <div class="detail-item">
+                                <label>Services Offered:</label>
+                                <span>House Cleaning, Deep Cleaning, Move-in/Move-out Cleaning</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Experience:</label>
+                                <span>5+ years</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Service Area:</label>
+                                <span>Downtown, Midtown, Uptown</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Contact:</label>
+                                <span>contact@cleanpro.com | (555) 123-4567</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics-section" class="content-section">
+                <div class="section-header">
+                    <h2>Analytics & Performance</h2>
+                </div>
+                <div class="analytics-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-content">
+                            <h3>Total Orders</h3>
+                            <p class="stat-number">47</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <h3>Completed</h3>
+                            <p class="stat-number">42</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-content">
+                            <h3>Average Rating</h3>
+                            <p class="stat-number">4.8</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <h3>Total Earnings</h3>
+                            <p class="stat-number">$2,350</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="content-section">
+                <div class="section-header">
+                    <h2>Settings</h2>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-card">
+                        <h3>Account Settings</h3>
+                        <div class="setting-item">
+                            <label>Business Name</label>
+                            <input type="text" value="CleanPro Services" readonly>
+                        </div>
+                        <div class="setting-item">
+                            <label>Email</label>
+                            <input type="email" value="contact@cleanpro.com" readonly>
+                        </div>
+                        <div class="setting-item">
+                            <label>Phone</label>
+                            <input type="tel" value="(555) 123-4567" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderModal()">&times;</span>
+            <h2>Order Details</h2>
+            <div id="orderDetails" class="order-details">
+                <!-- Order details will be populated by JavaScript -->
+            </div>
+            <div class="order-actions">
+                <button id="confirmBtn" class="action-btn confirm" onclick="updateOrderStatus('confirmed')">
+                    Confirm Order
+                </button>
+                <button id="completeBtn" class="action-btn complete" onclick="updateOrderStatus('completed')" style="display: none;">
+                    Mark Complete
+                </button>
+                <button class="action-btn cancel" onclick="closeOrderModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeService Pro - Your Trusted Home Service Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>HomeService Pro</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <div class="demo-links">
+                    <a href="vendor.html" class="demo-link">Vendor Demo</a>
+                    <a href="admin.html" class="demo-link">Admin Demo</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Professional Home Services at Your Doorstep</h1>
+            <p>Connect with trusted service providers for all your home maintenance needs</p>
+            <a href="#services" class="cta-button">Explore Services</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card" onclick="selectService('cleaning')">
+                    <div class="service-icon">🧹</div>
+                    <h3>House Cleaning</h3>
+                    <p>Professional cleaning services for your home</p>
+                    <div class="service-price">From $50</div>
+                </div>
+                <div class="service-card" onclick="selectService('plumbing')">
+                    <div class="service-icon">🔧</div>
+                    <h3>Plumbing</h3>
+                    <p>Expert plumbing repairs and installations</p>
+                    <div class="service-price">From $80</div>
+                </div>
+                <div class="service-card" onclick="selectService('painting')">
+                    <div class="service-icon">🎨</div>
+                    <h3>Painting</h3>
+                    <p>Interior and exterior painting services</p>
+                    <div class="service-price">From $200</div>
+                </div>
+                <div class="service-card" onclick="selectService('ac')">
+                    <div class="service-icon">❄️</div>
+                    <h3>AC Maintenance</h3>
+                    <p>AC repair, maintenance, and installation</p>
+                    <div class="service-price">From $100</div>
+                </div>
+                <div class="service-card" onclick="selectService('electrical')">
+                    <div class="service-icon">⚡</div>
+                    <h3>Electrical</h3>
+                    <p>Electrical repairs and installations</p>
+                    <div class="service-price">From $120</div>
+                </div>
+                <div class="service-card" onclick="selectService('gardening')">
+                    <div class="service-icon">🌱</div>
+                    <h3>Gardening</h3>
+                    <p>Landscaping and garden maintenance</p>
+                    <div class="service-price">From $60</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Providers Modal -->
+    <div id="providersModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Select Service Provider</h2>
+            <div id="providersList" class="providers-list">
+                <!-- Providers will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Form Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBookingModal()">&times;</span>
+            <h2>Book Your Service</h2>
+            <form id="bookingForm" class="booking-form">
+                <div class="form-group">
+                    <label for="customerName">Full Name</label>
+                    <input type="text" id="customerName" name="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email</label>
+                    <input type="email" id="customerEmail" name="customerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Phone Number</label>
+                    <input type="tel" id="customerPhone" name="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerAddress">Address</label>
+                    <textarea id="customerAddress" name="customerAddress" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="serviceDate">Preferred Date</label>
+                    <input type="date" id="serviceDate" name="serviceDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="serviceTime">Preferred Time</label>
+                    <select id="serviceTime" name="serviceTime" required>
+                        <option value="">Select Time</option>
+                        <option value="09:00">9:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="14:00">2:00 PM</option>
+                        <option value="15:00">3:00 PM</option>
+                        <option value="16:00">4:00 PM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="specialInstructions">Special Instructions</label>
+                    <textarea id="specialInstructions" name="specialInstructions" rows="2" placeholder="Any specific requirements or notes..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Book Service</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content success-content">
+            <div class="success-icon">✅</div>
+            <h2>Booking Confirmed!</h2>
+            <p>Your service has been booked successfully. You will receive a confirmation email shortly.</p>
+            <div class="booking-details">
+                <p><strong>Service:</strong> <span id="bookedService"></span></p>
+                <p><strong>Provider:</strong> <span id="bookedProvider"></span></p>
+                <p><strong>Date:</strong> <span id="bookedDate"></span></p>
+                <p><strong>Time:</strong> <span id="bookedTime"></span></p>
+            </div>
+            <button onclick="closeSuccessModal()" class="close-btn">Close</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

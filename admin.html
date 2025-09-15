@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - HomeService Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Admin Dashboard</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="vendor.html" class="demo-link">Vendor Demo</a>
+                <div class="admin-info">
+                    <span class="admin-name">Super Admin</span>
+                    <span class="admin-role">Platform Manager</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="sidebar-menu">
+                <div class="menu-item active" onclick="showSection('dashboard')">
+                    <span class="menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item" onclick="showSection('vendors')">
+                    <span class="menu-icon">👥</span>
+                    <span>Vendors</span>
+                </div>
+                <div class="menu-item" onclick="showSection('orders')">
+                    <span class="menu-icon">📋</span>
+                    <span>Orders</span>
+                </div>
+                <div class="menu-item" onclick="showSection('customers')">
+                    <span class="menu-icon">👤</span>
+                    <span>Customers</span>
+                </div>
+                <div class="menu-item" onclick="showSection('analytics')">
+                    <span class="menu-icon">📈</span>
+                    <span>Analytics</span>
+                </div>
+                <div class="menu-item" onclick="showSection('settings')">
+                    <span class="menu-icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="admin-main">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h2>Platform Overview</h2>
+                    <div class="dashboard-actions">
+                        <button class="action-btn primary" onclick="refreshData()">Refresh Data</button>
+                    </div>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <h3>Total Vendors</h3>
+                            <p class="stat-number">24</p>
+                            <p class="stat-change positive">+3 this month</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-content">
+                            <h3>Total Orders</h3>
+                            <p class="stat-number">156</p>
+                            <p class="stat-change positive">+12 today</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <h3>Platform Revenue</h3>
+                            <p class="stat-number">$12,450</p>
+                            <p class="stat-change positive">+8% this month</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-content">
+                            <h3>Avg Rating</h3>
+                            <p class="stat-number">4.7</p>
+                            <p class="stat-change positive">+0.2 this month</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Recent Orders</h3>
+                        <div class="activity-list" id="recentOrders">
+                            <!-- Recent orders will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Pending Vendor Approvals</h3>
+                        <div class="activity-list" id="pendingVendors">
+                            <!-- Pending vendors will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vendors Section -->
+            <div id="vendors-section" class="content-section">
+                <div class="section-header">
+                    <h2>Vendor Management</h2>
+                    <div class="vendor-filters">
+                        <button class="filter-btn active" onclick="filterVendors('all')">All</button>
+                        <button class="filter-btn" onclick="filterVendors('pending')">Pending</button>
+                        <button class="filter-btn" onclick="filterVendors('approved')">Approved</button>
+                        <button class="filter-btn" onclick="filterVendors('rejected')">Rejected</button>
+                    </div>
+                </div>
+                
+                <div class="vendors-grid" id="vendorsGrid">
+                    <!-- Vendors will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="orders-section" class="content-section">
+                <div class="section-header">
+                    <h2>Order Management</h2>
+                    <div class="order-filters">
+                        <button class="filter-btn active" onclick="filterOrders('all')">All</button>
+                        <button class="filter-btn" onclick="filterOrders('pending')">Pending</button>
+                        <button class="filter-btn" onclick="filterOrders('confirmed')">Confirmed</button>
+                        <button class="filter-btn" onclick="filterOrders('completed')">Completed</button>
+                    </div>
+                </div>
+                
+                <div class="orders-table-container">
+                    <table class="orders-table" id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Service</th>
+                                <th>Vendor</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Orders will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Customers Section -->
+            <div id="customers-section" class="content-section">
+                <div class="section-header">
+                    <h2>Customer Management</h2>
+                </div>
+                <div class="customers-grid" id="customersGrid">
+                    <!-- Customers will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics-section" class="content-section">
+                <div class="section-header">
+                    <h2>Platform Analytics</h2>
+                </div>
+                <div class="analytics-content">
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <h3>Service Popularity</h3>
+                            <div class="chart-placeholder">
+                                <div class="chart-bar" style="height: 80%">Cleaning</div>
+                                <div class="chart-bar" style="height: 60%">Plumbing</div>
+                                <div class="chart-bar" style="height: 40%">Painting</div>
+                                <div class="chart-bar" style="height: 70%">AC Maintenance</div>
+                                <div class="chart-bar" style="height: 50%">Electrical</div>
+                                <div class="chart-bar" style="height: 30%">Gardening</div>
+                            </div>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Monthly Revenue</h3>
+                            <div class="revenue-chart">
+                                <div class="revenue-bar" style="height: 60%">Jan</div>
+                                <div class="revenue-bar" style="height: 75%">Feb</div>
+                                <div class="revenue-bar" style="height: 80%">Mar</div>
+                                <div class="revenue-bar" style="height: 90%">Apr</div>
+                                <div class="revenue-bar" style="height: 85%">May</div>
+                                <div class="revenue-bar" style="height: 100%">Jun</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="content-section">
+                <div class="section-header">
+                    <h2>Platform Settings</h2>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-card">
+                        <h3>Platform Configuration</h3>
+                        <div class="setting-item">
+                            <label>Platform Name</label>
+                            <input type="text" value="HomeService Pro" readonly>
+                        </div>
+                        <div class="setting-item">
+                            <label>Commission Rate</label>
+                            <input type="number" value="15" readonly>
+                            <span class="setting-unit">%</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Auto-approve Vendors</label>
+                            <input type="checkbox" checked disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vendor Details Modal -->
+    <div id="vendorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeVendorModal()">&times;</span>
+            <h2>Vendor Details</h2>
+            <div id="vendorDetails" class="vendor-details">
+                <!-- Vendor details will be populated by JavaScript -->
+            </div>
+            <div class="vendor-actions">
+                <button id="approveBtn" class="action-btn approve" onclick="updateVendorStatus('approved')">
+                    Approve Vendor
+                </button>
+                <button id="rejectBtn" class="action-btn reject" onclick="updateVendorStatus('rejected')">
+                    Reject Vendor
+                </button>
+                <button class="action-btn cancel" onclick="closeVendorModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderModal()">&times;</span>
+            <h2>Order Details</h2>
+            <div id="orderDetails" class="order-details">
+                <!-- Order details will be populated by JavaScript -->
+            </div>
+            <div class="order-actions">
+                <button class="action-btn cancel" onclick="closeOrderModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>
