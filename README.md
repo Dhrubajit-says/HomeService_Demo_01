@@ -124,8 +124,3 @@ The demo is fully customizable:
 - Customize the booking form fields
 - Adjust the admin dashboard metrics
 
-This demo effectively showcases the complete user journey and platform functionality for your home service business!
-# homeservice-demo-01-
-# homeservice-demo-01-
-# homeservice-demo
-# HomeService_Demo_01
