@@ -30,7 +30,10 @@
         <div class="hero-content">
             <h1>Professional Home Services at Your Doorstep</h1>
             <p>Connect with trusted service providers for all your home maintenance needs</p>
-            <a href="#services" class="cta-button">Explore Services</a>
+            <div class="hero-buttons">
+                <a href="#services" class="cta-button">Explore Services</a>
+                <button onclick="openVendorRegistration()" class="cta-button secondary">Become a Vendor</button>
+            </div>
         </div>
     </section>
 
@@ -151,6 +154,153 @@
                 <p><strong>Time:</strong> <span id="bookedTime"></span></p>
             </div>
             <button onclick="closeSuccessModal()" class="close-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Vendor Registration Modal -->
+    <div id="vendorRegistrationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeVendorRegistration()">&times;</span>
+            <h2>Become a Vendor</h2>
+            <p class="modal-subtitle">Join our platform and start providing services to customers</p>
+            <form id="vendorRegistrationForm" class="registration-form">
+                <div class="form-section">
+                    <h3>Business Information</h3>
+                    <div class="form-group">
+                        <label for="businessName">Business Name *</label>
+                        <input type="text" id="businessName" name="businessName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessType">Business Type *</label>
+                        <select id="businessType" name="businessType" required>
+                            <option value="">Select Business Type</option>
+                            <option value="individual">Individual Contractor</option>
+                            <option value="company">Company</option>
+                            <option value="partnership">Partnership</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessDescription">Business Description *</label>
+                        <textarea id="businessDescription" name="businessDescription" rows="3" required placeholder="Describe your business and services..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Contact Information</h3>
+                    <div class="form-group">
+                        <label for="contactName">Contact Person Name *</label>
+                        <input type="text" id="contactName" name="contactName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Email Address *</label>
+                        <input type="email" id="contactEmail" name="contactEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">Phone Number *</label>
+                        <input type="tel" id="contactPhone" name="contactPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessAddress">Business Address *</label>
+                        <textarea id="businessAddress" name="businessAddress" rows="2" required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Services & Experience</h3>
+                    <div class="form-group">
+                        <label>Services You Provide *</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="services" value="cleaning">
+                                <span class="checkmark"></span>
+                                House Cleaning
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="services" value="plumbing">
+                                <span class="checkmark"></span>
+                                Plumbing
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="services" value="painting">
+                                <span class="checkmark"></span>
+                                Painting
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="services" value="ac">
+                                <span class="checkmark"></span>
+                                AC Maintenance
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="services" value="electrical">
+                                <span class="checkmark"></span>
+                                Electrical
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="services" value="gardening">
+                                <span class="checkmark"></span>
+                                Gardening
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">Years of Experience *</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">Select Experience</option>
+                            <option value="0-1">0-1 years</option>
+                            <option value="2-3">2-3 years</option>
+                            <option value="4-5">4-5 years</option>
+                            <option value="6-10">6-10 years</option>
+                            <option value="10+">10+ years</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceAreas">Service Areas *</label>
+                        <input type="text" id="serviceAreas" name="serviceAreas" required placeholder="e.g., Downtown, Midtown, Uptown">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Additional Information</h3>
+                    <div class="form-group">
+                        <label for="licenses">Licenses & Certifications</label>
+                        <textarea id="licenses" name="licenses" rows="2" placeholder="List any relevant licenses or certifications..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="insurance">Insurance Information</label>
+                        <textarea id="insurance" name="insurance" rows="2" placeholder="Insurance details..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="website">Website (Optional)</label>
+                        <input type="url" id="website" name="website" placeholder="https://yourwebsite.com">
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="termsAgreement" name="termsAgreement" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a> *
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Vendor Registration Success Modal -->
+    <div id="vendorSuccessModal" class="modal">
+        <div class="modal-content success-content">
+            <div class="success-icon">🎉</div>
+            <h2>Application Submitted!</h2>
+            <p>Thank you for your interest in joining HomeService Pro. Your application has been submitted and is under review.</p>
+            <div class="application-details">
+                <p><strong>Application ID:</strong> <span id="applicationId"></span></p>
+                <p><strong>Business Name:</strong> <span id="applicationBusinessName"></span></p>
+                <p><strong>Submitted:</strong> <span id="applicationDate"></span></p>
+            </div>
+            <p class="next-steps">Our admin team will review your application within 2-3 business days. You will receive an email notification once your application is approved.</p>
+            <button onclick="closeVendorSuccessModal()" class="close-btn">Close</button>
         </div>
     </div>
 

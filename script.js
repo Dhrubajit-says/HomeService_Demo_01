@@ -186,7 +186,39 @@ function selectService(serviceType) {
     const providersList = document.getElementById('providersList');
     providersList.innerHTML = '';
     
-    service.providers.forEach(provider => {
+    // Get approved vendors from localStorage
+    const approvedVendors = JSON.parse(localStorage.getItem('approvedVendors')) || [];
+    
+    // Combine existing providers with approved vendors
+    let allProviders = [...service.providers];
+    
+    // Add approved vendors that provide this service
+    approvedVendors.forEach(vendor => {
+        if (vendor.services && vendor.services.includes(serviceType)) {
+            const serviceMap = {
+                'cleaning': 'House Cleaning',
+                'plumbing': 'Plumbing',
+                'painting': 'Painting',
+                'ac': 'AC Maintenance',
+                'electrical': 'Electrical',
+                'gardening': 'Gardening'
+            };
+            
+            const newProvider = {
+                id: vendor.id,
+                name: vendor.businessName,
+                rating: vendor.rating || '4.5',
+                reviews: vendor.reviews || 0,
+                price: getServicePrice(serviceType),
+                experience: vendor.experience || 'New',
+                description: vendor.businessDescription || 'Professional service provider'
+            };
+            
+            allProviders.push(newProvider);
+        }
+    });
+    
+    allProviders.forEach(provider => {
         const providerCard = document.createElement('div');
         providerCard.className = 'provider-card';
         providerCard.onclick = () => selectProvider(provider.id, providerCard);
@@ -209,6 +241,19 @@ function selectService(serviceType) {
     // Show modal
     document.getElementById('providersModal').style.display = 'block';
     document.getElementById('providersModal').classList.add('fade-in');
+}
+
+// Helper function to get service price
+function getServicePrice(serviceType) {
+    const priceMap = {
+        'cleaning': '$50',
+        'plumbing': '$80',
+        'painting': '$200',
+        'ac': '$100',
+        'electrical': '$120',
+        'gardening': '$60'
+    };
+    return priceMap[serviceType] || '$75';
 }
 
 // Provider selection function
@@ -322,11 +367,82 @@ function addToVendorQueue(bookingData) {
     localStorage.setItem('vendorOrders', JSON.stringify(vendorOrders));
 }
 
+// Vendor Registration Functions
+function openVendorRegistration() {
+    document.getElementById('vendorRegistrationModal').style.display = 'block';
+    document.getElementById('vendorRegistrationModal').classList.add('fade-in');
+}
+
+function closeVendorRegistration() {
+    document.getElementById('vendorRegistrationModal').style.display = 'none';
+    document.getElementById('vendorRegistrationModal').classList.remove('fade-in');
+    // Reset form
+    document.getElementById('vendorRegistrationForm').reset();
+}
+
+function closeVendorSuccessModal() {
+    document.getElementById('vendorSuccessModal').style.display = 'none';
+    closeVendorRegistration();
+}
+
+// Handle vendor registration form submission
+document.getElementById('vendorRegistrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form data
+    const formData = new FormData(this);
+    const selectedServices = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
+    
+    // Validate that at least one service is selected
+    if (selectedServices.length === 0) {
+        alert('Please select at least one service you provide.');
+        return;
+    }
+    
+    const vendorData = {
+        id: Date.now(),
+        businessName: formData.get('businessName'),
+        businessType: formData.get('businessType'),
+        businessDescription: formData.get('businessDescription'),
+        contactName: formData.get('contactName'),
+        contactEmail: formData.get('contactEmail'),
+        contactPhone: formData.get('contactPhone'),
+        businessAddress: formData.get('businessAddress'),
+        services: selectedServices,
+        experience: formData.get('experience'),
+        serviceAreas: formData.get('serviceAreas'),
+        licenses: formData.get('licenses'),
+        insurance: formData.get('insurance'),
+        website: formData.get('website'),
+        status: 'pending',
+        submittedAt: new Date().toISOString(),
+        rating: '0',
+        reviews: 0
+    };
+    
+    // Store vendor application (in a real app, this would be sent to a server)
+    let vendorApplications = JSON.parse(localStorage.getItem('vendorApplications')) || [];
+    vendorApplications.push(vendorData);
+    localStorage.setItem('vendorApplications', JSON.stringify(vendorApplications));
+    
+    // Update success modal with application details
+    document.getElementById('applicationId').textContent = 'APP-' + vendorData.id;
+    document.getElementById('applicationBusinessName').textContent = vendorData.businessName;
+    document.getElementById('applicationDate').textContent = new Date(vendorData.submittedAt).toLocaleDateString();
+    
+    // Close registration modal and show success modal
+    closeVendorRegistration();
+    document.getElementById('vendorSuccessModal').style.display = 'block';
+    document.getElementById('vendorSuccessModal').classList.add('fade-in');
+});
+
 // Close modals when clicking outside
 window.onclick = function(event) {
     const providersModal = document.getElementById('providersModal');
     const bookingModal = document.getElementById('bookingModal');
     const successModal = document.getElementById('successModal');
+    const vendorRegistrationModal = document.getElementById('vendorRegistrationModal');
+    const vendorSuccessModal = document.getElementById('vendorSuccessModal');
     
     if (event.target === providersModal) {
         closeModal();
@@ -336,6 +452,12 @@ window.onclick = function(event) {
     }
     if (event.target === successModal) {
         closeSuccessModal();
+    }
+    if (event.target === vendorRegistrationModal) {
+        closeVendorRegistration();
+    }
+    if (event.target === vendorSuccessModal) {
+        closeVendorSuccessModal();
     }
 }
 

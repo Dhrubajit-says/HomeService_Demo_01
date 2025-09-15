@@ -255,26 +255,38 @@ function loadRecentOrders() {
 // Load pending vendors
 function loadPendingVendors() {
     const pendingVendorsContainer = document.getElementById('pendingVendors');
+    
+    // Get vendor applications from localStorage
+    const vendorApplications = JSON.parse(localStorage.getItem('vendorApplications')) || [];
+    const pendingApplications = vendorApplications.filter(app => app.status === 'pending');
+    
+    // Also get pending vendors from existing data
     const pendingVendors = vendorsData.filter(vendor => vendor.status === 'pending');
     
-    if (pendingVendors.length === 0) {
+    // Combine both sources
+    const allPendingVendors = [...pendingApplications, ...pendingVendors];
+    
+    if (allPendingVendors.length === 0) {
         pendingVendorsContainer.innerHTML = '<p class="no-data">No pending vendors</p>';
         return;
     }
     
     pendingVendorsContainer.innerHTML = '';
     
-    pendingVendors.forEach(vendor => {
+    allPendingVendors.forEach(vendor => {
         const activityItem = document.createElement('div');
         activityItem.className = 'activity-item';
         activityItem.onclick = () => showVendorDetails(vendor);
         
+        const services = vendor.services ? vendor.services.join(', ') : 'N/A';
+        const date = vendor.submittedAt ? new Date(vendor.submittedAt) : new Date(vendor.joinDate);
+        
         activityItem.innerHTML = `
             <div class="activity-info">
-                <h4>${vendor.name}</h4>
-                <p>${vendor.services.join(', ')}</p>
+                <h4>${vendor.businessName || vendor.name}</h4>
+                <p>${services}</p>
             </div>
-            <div class="activity-time">${new Date(vendor.joinDate).toLocaleDateString()}</div>
+            <div class="activity-time">${date.toLocaleDateString()}</div>
         `;
         
         pendingVendorsContainer.appendChild(activityItem);
@@ -286,7 +298,13 @@ function loadVendors() {
     const vendorsGrid = document.getElementById('vendorsGrid');
     vendorsGrid.innerHTML = '';
     
-    vendorsData.forEach(vendor => {
+    // Get vendor applications from localStorage
+    const vendorApplications = JSON.parse(localStorage.getItem('vendorApplications')) || [];
+    
+    // Combine existing vendors with applications
+    const allVendors = [...vendorApplications, ...vendorsData];
+    
+    allVendors.forEach(vendor => {
         const vendorCard = createVendorCard(vendor);
         vendorsGrid.appendChild(vendorCard);
     });
@@ -300,32 +318,39 @@ function createVendorCard(vendor) {
     
     const statusClass = vendor.status;
     const statusText = vendor.status.charAt(0).toUpperCase() + vendor.status.slice(1);
+    const businessName = vendor.businessName || vendor.name;
+    const services = vendor.services ? vendor.services.join(', ') : 'N/A';
+    const rating = vendor.rating || '0';
+    const reviews = vendor.reviews || 0;
+    const totalOrders = vendor.totalOrders || 0;
+    const location = vendor.location || vendor.serviceAreas || 'N/A';
+    const joinDate = vendor.submittedAt || vendor.joinDate;
     
     vendorCard.innerHTML = `
         <div class="vendor-header">
-            <div class="vendor-name">${vendor.name}</div>
+            <div class="vendor-name">${businessName}</div>
             <div class="vendor-status ${statusClass}">${statusText}</div>
         </div>
         <div class="vendor-details">
             <div class="vendor-detail-item">
                 <span class="vendor-detail-label">Services:</span>
-                <span class="vendor-detail-value">${vendor.services.join(', ')}</span>
+                <span class="vendor-detail-value">${services}</span>
             </div>
             <div class="vendor-detail-item">
                 <span class="vendor-detail-label">Rating:</span>
-                <span class="vendor-detail-value">⭐ ${vendor.rating} (${vendor.reviews} reviews)</span>
+                <span class="vendor-detail-value">⭐ ${rating} (${reviews} reviews)</span>
             </div>
             <div class="vendor-detail-item">
                 <span class="vendor-detail-label">Total Orders:</span>
-                <span class="vendor-detail-value">${vendor.totalOrders}</span>
+                <span class="vendor-detail-value">${totalOrders}</span>
             </div>
             <div class="vendor-detail-item">
                 <span class="vendor-detail-label">Location:</span>
-                <span class="vendor-detail-value">${vendor.location}</span>
+                <span class="vendor-detail-value">${location}</span>
             </div>
             <div class="vendor-detail-item">
                 <span class="vendor-detail-label">Joined:</span>
-                <span class="vendor-detail-value">${new Date(vendor.joinDate).toLocaleDateString()}</span>
+                <span class="vendor-detail-value">${new Date(joinDate).toLocaleDateString()}</span>
             </div>
         </div>
     `;
@@ -340,42 +365,90 @@ function showVendorDetails(vendor) {
     const approveBtn = document.getElementById('approveBtn');
     const rejectBtn = document.getElementById('rejectBtn');
     
+    const businessName = vendor.businessName || vendor.name;
+    const email = vendor.contactEmail || vendor.email;
+    const phone = vendor.contactPhone || vendor.phone;
+    const services = vendor.services ? vendor.services.join(', ') : 'N/A';
+    const rating = vendor.rating || '0';
+    const reviews = vendor.reviews || 0;
+    const totalOrders = vendor.totalOrders || 0;
+    const location = vendor.location || vendor.serviceAreas || 'N/A';
+    const joinDate = vendor.submittedAt || vendor.joinDate;
+    const experience = vendor.experience || 'N/A';
+    const businessType = vendor.businessType || 'N/A';
+    const businessDescription = vendor.businessDescription || 'N/A';
+    const licenses = vendor.licenses || 'None';
+    const insurance = vendor.insurance || 'None';
+    const website = vendor.website || 'None';
+    
     vendorDetails.innerHTML = `
         <div class="detail-item">
-            <span class="vendor-detail-label">Vendor ID:</span>
+            <span class="vendor-detail-label">Application ID:</span>
             <span class="vendor-detail-value">#${vendor.id}</span>
         </div>
         <div class="detail-item">
             <span class="vendor-detail-label">Business Name:</span>
-            <span class="vendor-detail-value">${vendor.name}</span>
+            <span class="vendor-detail-value">${businessName}</span>
+        </div>
+        <div class="detail-item">
+            <span class="vendor-detail-label">Business Type:</span>
+            <span class="vendor-detail-value">${businessType}</span>
+        </div>
+        <div class="detail-item">
+            <span class="vendor-detail-label">Contact Person:</span>
+            <span class="vendor-detail-value">${vendor.contactName || 'N/A'}</span>
         </div>
         <div class="detail-item">
             <span class="vendor-detail-label">Email:</span>
-            <span class="vendor-detail-value">${vendor.email}</span>
+            <span class="vendor-detail-value">${email}</span>
         </div>
         <div class="detail-item">
             <span class="vendor-detail-label">Phone:</span>
-            <span class="vendor-detail-value">${vendor.phone}</span>
+            <span class="vendor-detail-value">${phone}</span>
+        </div>
+        <div class="detail-item">
+            <span class="vendor-detail-label">Business Address:</span>
+            <span class="vendor-detail-value">${vendor.businessAddress || 'N/A'}</span>
         </div>
         <div class="detail-item">
             <span class="vendor-detail-label">Services:</span>
-            <span class="vendor-detail-value">${vendor.services.join(', ')}</span>
+            <span class="vendor-detail-value">${services}</span>
+        </div>
+        <div class="detail-item">
+            <span class="vendor-detail-label">Experience:</span>
+            <span class="vendor-detail-value">${experience}</span>
+        </div>
+        <div class="detail-item">
+            <span class="vendor-detail-label">Service Areas:</span>
+            <span class="vendor-detail-value">${location}</span>
+        </div>
+        <div class="detail-item">
+            <span class="vendor-detail-label">Business Description:</span>
+            <span class="vendor-detail-value">${businessDescription}</span>
+        </div>
+        <div class="detail-item">
+            <span class="vendor-detail-label">Licenses:</span>
+            <span class="vendor-detail-value">${licenses}</span>
+        </div>
+        <div class="detail-item">
+            <span class="vendor-detail-label">Insurance:</span>
+            <span class="vendor-detail-value">${insurance}</span>
+        </div>
+        <div class="detail-item">
+            <span class="vendor-detail-label">Website:</span>
+            <span class="vendor-detail-value">${website}</span>
         </div>
         <div class="detail-item">
             <span class="vendor-detail-label">Rating:</span>
-            <span class="vendor-detail-value">⭐ ${vendor.rating} (${vendor.reviews} reviews)</span>
+            <span class="vendor-detail-value">⭐ ${rating} (${reviews} reviews)</span>
         </div>
         <div class="detail-item">
             <span class="vendor-detail-label">Total Orders:</span>
-            <span class="vendor-detail-value">${vendor.totalOrders}</span>
+            <span class="vendor-detail-value">${totalOrders}</span>
         </div>
         <div class="detail-item">
-            <span class="vendor-detail-label">Location:</span>
-            <span class="vendor-detail-value">${vendor.location}</span>
-        </div>
-        <div class="detail-item">
-            <span class="vendor-detail-label">Join Date:</span>
-            <span class="vendor-detail-value">${new Date(vendor.joinDate).toLocaleDateString()}</span>
+            <span class="vendor-detail-label">Application Date:</span>
+            <span class="vendor-detail-value">${new Date(joinDate).toLocaleDateString()}</span>
         </div>
         <div class="detail-item">
             <span class="vendor-detail-label">Status:</span>
@@ -413,14 +486,32 @@ function updateVendorStatus(newStatus) {
     
     if (!vendor) return;
     
-    // Update vendor status in data
-    const vendorIndex = vendorsData.findIndex(v => v.id === vendor.id);
-    if (vendorIndex !== -1) {
-        vendorsData[vendorIndex].status = newStatus;
+    // Check if this is a vendor application from localStorage
+    const vendorApplications = JSON.parse(localStorage.getItem('vendorApplications')) || [];
+    const applicationIndex = vendorApplications.findIndex(app => app.id === vendor.id);
+    
+    if (applicationIndex !== -1) {
+        // Update vendor application status
+        vendorApplications[applicationIndex].status = newStatus;
+        localStorage.setItem('vendorApplications', JSON.stringify(vendorApplications));
+        
+        // If approved, add to approved vendors list
+        if (newStatus === 'approved') {
+            let approvedVendors = JSON.parse(localStorage.getItem('approvedVendors')) || [];
+            approvedVendors.push(vendorApplications[applicationIndex]);
+            localStorage.setItem('approvedVendors', JSON.stringify(approvedVendors));
+        }
+    } else {
+        // Update vendor status in existing data
+        const vendorIndex = vendorsData.findIndex(v => v.id === vendor.id);
+        if (vendorIndex !== -1) {
+            vendorsData[vendorIndex].status = newStatus;
+        }
     }
     
     // Show success message
-    showNotification(`Vendor ${vendor.name} ${newStatus} successfully!`, 'success');
+    const businessName = vendor.businessName || vendor.name;
+    showNotification(`Vendor ${businessName} ${newStatus} successfully!`, 'success');
     
     // Close modal and reload data
     closeVendorModal();

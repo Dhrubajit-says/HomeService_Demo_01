@@ -14,9 +14,81 @@ const vendorData = {
 
 // Initialize vendor dashboard
 document.addEventListener('DOMContentLoaded', function() {
+    checkVendorStatus();
     loadOrders();
     updateVendorStats();
 });
+
+// Check vendor status and show appropriate content
+function checkVendorStatus() {
+    // Check if there are any approved vendors
+    const approvedVendors = JSON.parse(localStorage.getItem('approvedVendors')) || [];
+    
+    if (approvedVendors.length > 0) {
+        // Update vendor data with the first approved vendor (for demo)
+        const approvedVendor = approvedVendors[0];
+        vendorData.name = approvedVendor.businessName;
+        vendorData.status = 'approved';
+        vendorData.contactEmail = approvedVendor.contactEmail;
+        vendorData.contactPhone = approvedVendor.contactPhone;
+        vendorData.services = approvedVendor.services;
+        vendorData.experience = approvedVendor.experience;
+        vendorData.serviceAreas = approvedVendor.serviceAreas;
+        
+        // Update the UI to show approved status
+        updateVendorUI();
+    }
+}
+
+// Update vendor UI elements
+function updateVendorUI() {
+    // Update navigation
+    const vendorNameElement = document.querySelector('.vendor-name');
+    if (vendorNameElement) {
+        vendorNameElement.textContent = vendorData.name;
+    }
+    
+    // Update profile section
+    const profileName = document.querySelector('.profile-content h3');
+    if (profileName) {
+        profileName.textContent = vendorData.name;
+    }
+    
+    // Update contact information
+    const contactInfo = document.querySelector('.profile-details .detail-item:last-child span');
+    if (contactInfo && vendorData.contactEmail && vendorData.contactPhone) {
+        contactInfo.textContent = `${vendorData.contactEmail} | ${vendorData.contactPhone}`;
+    }
+    
+    // Update services offered
+    const servicesInfo = document.querySelector('.profile-details .detail-item:first-child span');
+    if (servicesInfo && vendorData.services) {
+        const serviceNames = vendorData.services.map(service => {
+            const serviceMap = {
+                'cleaning': 'House Cleaning',
+                'plumbing': 'Plumbing',
+                'painting': 'Painting',
+                'ac': 'AC Maintenance',
+                'electrical': 'Electrical',
+                'gardening': 'Gardening'
+            };
+            return serviceMap[service] || service;
+        });
+        servicesInfo.textContent = serviceNames.join(', ');
+    }
+    
+    // Update experience
+    const experienceInfo = document.querySelector('.profile-details .detail-item:nth-child(2) span');
+    if (experienceInfo && vendorData.experience) {
+        experienceInfo.textContent = vendorData.experience;
+    }
+    
+    // Update service areas
+    const serviceAreasInfo = document.querySelector('.profile-details .detail-item:nth-child(3) span');
+    if (serviceAreasInfo && vendorData.serviceAreas) {
+        serviceAreasInfo.textContent = vendorData.serviceAreas;
+    }
+}
 
 // Show different sections
 function showSection(sectionName) {
